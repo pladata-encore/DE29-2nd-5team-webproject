@@ -1,0 +1,289 @@
+{{>common/header}}
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+
+<script type="text/javascript">
+	$(function(result){		
+		if($("#joinForm").submit(function(result){
+            var id = $("#userId").val();
+            if (id.match(/\s/g) || id.length == 0) {
+                alert("공백은 ID로 사용할 수 없습니다.");
+				$("#userId").val("").focus();
+                return false;
+            } else if ($("#userPw").val() !== $("#userPw2").val()){
+				alert("PW가 서로 다릅니다.");
+				$("#userPw").val("").focus();
+				$("#userPw2").val("");
+				return false;
+			} else if($.trim($("#userPw").val()) !== $("#userPw").val()){
+				alert("공백은 PW로 사용할 수 없습니다.");
+				$("#userPw").val("").focus();
+				$("#userPw2").val("");
+				return false;
+            } else if ($("#userPw").val().length <= 4) {
+				alert("PW가 4자리 이하입니다.");
+				$("#userPw").val("").focus();
+				$("#userPw2").val("");
+				return false;
+            } else if (!!($("#userPhNmb").val().match(/^01(?:0|1|[6-9])-?\\d{3,4}-?\\d{4}$/))) {
+				alert("올바른 전화번호 형식이 아닙니다.");
+				$("#userPhNmb").val("").focus();
+				return false;
+            }
+		}));
+	})
+
+    $(document).ready(function() {
+        $("#userPw2").on("focusout", function() {
+        if($("#userPw").val() !== $("#userPw2").val()) {
+            $("#label2").css("color", "red").text("PW가 서로 다릅니다.");
+            return false;
+        } else if ($("#userPw").val().match(/\s/g)) {
+            $("#label2").css("color", "red").text("공백은 PW로 사용할 수 없습니다.");
+            return false;
+        } else if ($("#userPw").val().length <= 4) {
+            $("#label2").css("color", "red").text("PW가 4자리 이하입니다.");
+            return false;
+        } else if($("#userPw").val() == $("#userPw2").val()) {
+            $("#label2").css("color", "black").text("사용 가능한 PW 입니다.");
+            return true;
+        }
+    })})
+
+    $(document).ready(function() {
+        //ID 중복 확인
+        //id를 입력할 수 있는 input text 영역을 벗어나면 동작한다.
+        $("#userId").on("focusout", function() {
+            
+            var id = $("#userId").val();
+            
+            if(id.match(/\s/g) || id.length == 0) {
+                $("#label1").css("color", "red").text("공백은 ID로 사용할 수 없습니다.");
+                return false;
+                }
+
+            //Ajax로 전송
+            $.ajax({
+                url : './ConfirmId',
+                data : {
+                    id : id
+                },
+                type : 'POST',
+                dataType : 'json',
+                success : function(result) {
+                    if (result == true) {
+                        $("#label1").css("color", "black").text("사용 가능한 ID 입니다.");
+                    } else {
+                        $("#label1").css("color", "red").text("사용 불가능한 ID 입니다.");
+                        $("#userId").focus();
+                    }
+                }
+            }); //End Ajax
+        });
+    })
+
+    $(document).ready(function() {
+        // Email 중복 확인
+        $("#userEmail").on("focusout", function() {
+            
+            var email = $("#userEmail").val();
+
+            if(!email.match(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/)) {
+                $("#label3").css("color", "red").text("올바른 Email 형식이 아닙니다.");
+                return false;
+                }
+
+            //Ajax로 전송
+            $.ajax({
+                url : './ConfirmEmail',
+                data : {
+                    email : email
+                },
+                type : 'POST',
+                dataType : 'json',
+                success : function(result) {
+                    if (result == true) {
+                        $("#label3").css("color", "black").text("사용 가능한 Email 입니다.");
+                    } else {
+                        $("#label3").css("color", "red").text("사용 불가능한 Email 입니다.");
+                    }
+                }
+            }); //End Ajax
+        });
+    })
+
+    $(document).ready(function() {
+        // Email 중복 확인
+        $("#userEmail").on("focusout", function() {
+            
+            var email = $("#userEmail").val();
+
+            if(!email.match(/^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/)) {
+                $("#label3").css("color", "red").text("올바른 Email 형식이 아닙니다.");
+                return false;
+                }
+
+            //Ajax로 전송
+            $.ajax({
+                url : './ConfirmEmail',
+                data : {
+                    email : email
+                },
+                type : 'POST',
+                dataType : 'json',
+                success : function(result) {
+                    if (result == true) {
+                        $("#label3").css("color", "black").text("사용 가능한 Email 입니다.");
+                    } else {
+                        $("#label3").css("color", "red").text("사용 불가능한 Email 입니다.");
+                    }
+                }
+            }); //End Ajax
+        });
+    })
+</script>
+<style>
+    .join_title{
+		font-weight: 700;
+		color: #2d2c2c;
+		margin-top: 60px;
+		margin-bottom: 30px;
+	}
+    .join_card{
+        width:60%;
+        height:100%;
+    }
+    .join_btn{
+		width: 100px;
+		display: flex;
+		font-size: 13px;
+		font-weight: 700;
+		background-color: #350a4e;
+		color: #fff;
+		text-transform: uppercase;
+		line-height: 40px;
+		padding-left: 46px;
+		padding-right: 46px;
+		white-space: nowrap;
+		z-index: 2;
+	}
+    .join_btn:hover{
+        background-color: #fa9e1b;
+    }
+</style>
+<body>
+    
+    <div class="menu_content d-flex flex-column align-items-center justify-content-left text-center">
+        <div class="container mb-5">
+            <div class="row">
+				<div class="col">
+					<h2 class="join_title text-center">회원가입</h2>
+				</div>
+			</div>
+            <div class="row d-flex align-items-center justify-content-center">
+                <div class="card join_card">
+                    <div class="card-body d-flex flex-column">
+                        <div class="row">
+                            <div class="col">
+                                <form id="joinForm" action="/join" method="post">
+                                    <div class="row mt-3 mb-1">
+                                        <div class="col-3 justify-content-end d-flex align-items-center">
+                                            <label for="id">* 아이디 </label>
+                                        </div>
+                                        <div class="col-9 d-flex flex-fill">
+                                            <input type="text" id="userId" name="userId" style="width: 100%;" placeholder="아이디를 입력하세요." required autofocus>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col justify-content-end d-flex align-items-center">
+                                            <small>공백 제외, 영문, 숫자 조합</small> 
+                                            <br>
+                                            <label id="label1"></label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row my-3">
+                                        <div class="col-3 justify-content-end d-flex align-items-center">
+                                            <label for="pwd">* 비밀번호 </label>
+                                        </div>
+                                        <div class="col-9 d-flex flex-fill">
+                                            <input type="password" id="userPw" name="userPw" style="width: 100%;" placeholder="비밀번호를 입력하세요." required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col justify-content-end d-flex align-items-center">
+                                            <small>최소 4자리 이상의 영문, 숫자, 특수문자 조합</small>
+                                        </div>
+                                    </div>
+                                    <div class="row my-3">
+                                        <div class="col-3 justify-content-end d-flex align-items-center">
+                                            <label for="pwd_equal">* 비밀번호 확인 </label>
+                                        </div>
+                                        <div class="col-9 d-flex flex-fill">
+                                            <input type="password" id="userPw2" name="userPw2" style="width: 100%;" placeholder="비밀번호 확인">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col justify-content-end d-flex align-items-center">
+                                            <label id="label2"></label>
+                                        </div>
+                                    </div>
+                                    <div class="row my-3">
+                                        <div class="col-3 justify-content-end d-flex align-items-center">
+                                            <label for="email">* 이메일</label>
+                                        </div>
+                                        <div class="col-9 d-flex flex-fill">
+                                            <input type="email" id="userEmail" name="userEmail" style="width: 100%;" placeholder="이메일을 입력하세요." required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col justify-content-end d-flex align-items-center">
+                                            <label id="label3"></label>
+                                        </div>
+                                    </div>
+                                    <div class="row my-3">
+                                        <div class="col-3 justify-content-end d-flex align-items-center">
+                                            <label for="name">* 이름</label>
+                                        </div>
+                                        <div class="col-9 d-flex flex-fill">
+                                            <input type="text" name="userNm" placeholder="이름을 입력하세요." style="width: 100%;" required>
+                                        </div>
+                                    </div>
+                                    <div class="row my-3">
+                                        <div class="col-3 justify-content-end d-flex align-items-center">
+                                            <label for="gender">성별</label>
+                                        </div>
+                                        <div class="col-9 d-flex flex-fill justify-content-around">
+                                            <label for="Male">남성</label>
+                                            <input type="radio" id="Male" name="userSex" value="Male"checked>
+                                            <label for="Male">여성</label>
+                                            <input type="radio" id="Female" name="userSex" value="Female">
+                                        </div>
+                                    </div>
+                                    <div class="row my-3">
+                                        <div class="col-3 justify-content-end d-flex align-items-center">
+                                            <label for="phone">* 핸드폰번호</label>
+                                        </div>
+                                        <div class="col-9 d-flex flex-fill">
+                                            <input type="phone" id="userPhNmb" name="userPhNmb" style="width: 100%;" placeholder="전화번호를 입력하세요.">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col justify-content-end d-flex align-items-center">
+                                            <label id="label4"></label>
+                                        </div>
+                                    </div>
+                                    <div class="row my-3">
+                                        <div class="col d-flex justify-content-center">
+                                            <input class="btn join_btn d-flex justify-content-center" type="submit" style="width: 100%;" style="width:60%;height:100%;" value="회원가입">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+
+{{>common/footer}}	

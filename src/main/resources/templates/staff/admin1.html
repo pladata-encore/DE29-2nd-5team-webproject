@@ -1,0 +1,38 @@
+{{>common/header}}
+
+<h3>관리자 {{adminYn}}님</h3>
+<body>
+    {{#userlist}}
+    <div class="member_list" >
+        <table class="admin_board_wrap" id="user-admin">
+            <thead class="admin_boardList">
+                <th class="admin_board_head">아이디</th>
+                <th class="admin_board_head">이름</th>
+                <th class="admin_board_head">성별</th>
+                <th class="admin_board_head">권한</th>
+                <th class="admin_board_head">가입일</th>
+                <th class="admin_board_head">전화번호</th>
+                <th class="admin_board_head">게시글수</th>
+                <th class="admin_board_head">댓글수</th>
+                <th class="admin_board_head">가입승인</th>
+            </thead>
+            <tbody>
+            <tr class="admin_board_content">
+                <td class="admin_board_content_nm">{{userId}}</td>
+                <td class="admin_board_content_nm">{{userNm}}</td>
+                <td class="admin_board_content_nm">{{userSex}}</td>
+                <td class="admin_board_content_nm">{{role}}</td>
+                <td class="admin_board_content_nm">{{createDate}}</td>
+                <td class="admin_board_content_nm">{{userPhNmb}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    {{/userlist}}
+
+    <a href="/index">
+        <button class="w3-button w3-block w3-black w3-ripple w3-margin-top w3-round">홈으로</button>
+    </a>
+
+</body>
+{{>common/footer}}	

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<style>
+	/* The Modal (background) */
+	.modal {
+		display: none; /* Hidden by default */
+		position: fixed; /* Stay in place */
+		z-index: 1; /* Sit on top */
+		left: 0;
+		top: 0;
+		width: 100%; /* Full width */
+		height: 100%; /* Full height */
+		overflow: auto; /* Enable scroll if needed */
+		background-color: rgb(0,0,0); /* Fallback color */
+		background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	}
+
+	/* Modal Content/Box */
+	.modal-content {
+		background-color: #fefefe;
+		margin: 15% auto; /* 15% from the top and centered */
+		padding: 20px;
+		border: 1px solid #888;
+		width: 30%; /* Could be more or less, depending on screen size */                          
+	}
+</style>
+
+<script>
+	$(function(){		
+		if($("#pwForm").submit(function(){
+
+/*			if($("#userPw").val() !== $("#old_pw").val()){
+				alert("기존 비밀번호가 다릅니다.");
+				$("#userPw").val("").focus();
+				$("#old_pw").val("");
+				return false;
+			}			
+*/
+
+			if($("#userPw").val() !== $("#userPw2").val()){
+				alert("비밀번호가 다릅니다.");
+				$("#userPw").val("").focus();
+				$("#userPw2").val("");
+				return false;
+/*			}else if ($("#pw").val().length < 8) {
+				alert("비밀번호는 8자 이상으로 설정해야 합니다.");
+				$("#pw").val("").focus();
+				return false; 
+*/
+			}else if($.trim($("#userPw").val()) !== $("#userPw").val()){
+				alert("공백은 입력이 불가능합니다.");
+				return false;
+			}
+		}));
+	})
+</script>
+<title>마이페이지</title>
+</head>
+<body>
+	<div class="w3-content w3-container w3-margin-top">
+		<div class="w3-container w3-card-4">
+			<div class="w3-center w3-large w3-margin-top">
+				<h3>My Page</h3>
+			</div>
+			<div>
+				<form id="myForm" action="/mypage/update" method="post">
+					<p>
+						<label>ID</label> 
+						<input class="w3-input" type="text" id="userId" name="userId" readonly value="{{userId}}"> 
+					</p>
+					<p>
+						<label>Email</label> 
+						<input class="w3-input" type="text" id="userEmail" name="userEmail" value="{{userEmail}}" required> 
+					</p>
+					<p class="w3-center">
+						<button type="submit" class="w3-button w3-block w3-black w3-ripple w3-margin-top w3-round">회원정보 변경</button>
+					</p>
+				</form>
+				<br />
+
+				<form id="pwForm" action="/findPw2" method="post">
+					<input type="hidden" name="userId" value="{{userId}}">
+					<p>
+						<label>New Password</label> 
+						<input class="w3-input" id="userPw" name="userPw" type="password" required>
+					</p>
+					<p>
+						<label>Confirm</label>
+						<input class="w3-input" id="userPw2" name="userPw2" type="password" required>
+					</p>
+					<p class="w3-center">
+						<button type="submit" id="joinBtn" class="w3-button w3-block w3-black w3-ripple w3-margin-top w3-round">비밀번호 변경</button>
+					</p>
+				</form>
+
+                <a href="/index">
+                    <button class="w3-button w3-block w3-black w3-ripple w3-margin-top w3-round">홈으로</button>
+                </a>
+                <br>
+                <a>
+                    <button class="w3-button w3-block w3-black w3-ripple w3-margin-top w3-round" onclick="open_pop();">탈퇴하기</button>
+                </a>
+
+				<div id="myModal" class="modal">
+					<div class="modal-content">
+							<p style="text-align: center;">
+								<span style="font-size: 14pt;">
+									<b><span style="font-size: 24pt;">탈퇴하기</span></b></span></p>
+							<p style="text-align: center; line-height: 1.5;"><br />정말 탈퇴하시겠습니까?</p>
+							<p><br /></p>
+							<a href="/mypage/signout">
+								<div style="cursor:pointer;background-color:#DDDDDD;text-align: center;padding-bottom: 10px;padding-top: 10px;" onClick="close_pop();">
+								<span class="pop_bt" style="font-size: 13pt;" >네</span>		
+							</a>
+							<div style="cursor:pointer;background-color:#DDDDDD;text-align: center;padding-bottom: 10px;padding-top: 10px;" onClick="close_pop();">
+							<span class="pop_bt" style="font-size: 13pt;">아니오</span>
+						</div>
+					</div>
+				</div>
+
+				<script type="text/javascript">
+					function open_pop(flag) {
+						$('#myModal').show();
+					};
+					//팝업 Close 기능
+					function close_pop(flag) {
+						$('#myModal').hide();
+					};
+				</script>
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>

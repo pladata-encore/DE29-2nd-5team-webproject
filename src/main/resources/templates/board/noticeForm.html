@@ -1,0 +1,121 @@
+{{>common/header}}
+<title>게 시 판</title>
+</head>
+<style>
+	
+	.notice_panel{
+		/* display: none !important; */
+		width: 100%;
+		height: 100%;
+		-webkit-animation: fadeEffect 1s;
+		animation: fadeEffect 1s;
+	}
+	.notice_title{
+		font-weight: 700;
+		color: #2d2c2c;
+		margin-top: 60px;
+		margin-bottom: 30px;
+	}
+	.notice_head{
+		font-size: 24px;
+		color: #929191;
+		line-height: 1.336;
+		margin-bottom: 0px;
+		align-items: center;
+		border-bottom: 1px solid;
+	}
+	.notice_save_btn {
+		width: 100px;
+		display: block;
+		font-size: 13px;
+		font-weight: 700;
+        border-color : #350a4e;
+		background-color: #350a4e;
+		color: #fff;
+		text-transform: uppercase;
+		line-height: 40px;
+		padding-left: 46px;
+		padding-right: 46px;
+		white-space: nowrap;
+		z-index: 2;
+	}
+	.notice_save_btn:hover{
+		background-color: #fa9e1b;
+	}
+
+	.board_row{
+		padding-top:2%;
+	}
+
+    #noticeContents{
+        height: 50vh;
+        resize : None;
+    }
+
+    .noticeLabel{
+        font-size: 20px;
+        font-weight: 700;
+        color : #350a4e;
+    }
+</style>
+<body>
+
+<div class="noticeList">
+	<div class="container">
+		<div class="notice_panel">
+			{{^notice}}
+            <div class="row">
+				<div class="col">
+					<h2 class="notice_title text-center">새글 등록</h2>
+				</div>
+			</div>
+            <div class="row">	
+                <div class="col">					
+					<!-- {{^notice}} -->
+					<form class="mt-3" action="/board/notice/save" method="post">
+						<div class="mt-3">
+							<label for="noticeTitle" class="noticeLabel">제목</label>
+                            <input type="text" class="form-control" name="title" id="noticeTitle">
+							<label for="noticeContents" class="noticeLabel">내용</label>	
+                            <textarea class="form-control" id="noticeContents" name="contents" rows="3"></textarea>
+							<div class="notice_btn d-flex justify-content-end">
+								<button class="btn notice_save_btn my-1 px-1 py-0" style="font-size:15px;" type="submit">저장</button>
+                        </div>
+					</form>
+					<!-- {{/notice}} -->
+				</div>
+			</div>
+			{{/notice}}
+
+			{{#notice}}
+				<div class="col">
+					<h2 class="notice_title text-center">글 수정</h2>
+				</div>
+					<form class="mt-3" action="/board/notice/{{noticeId}}/edit.do" method="post">
+                        <div class="mb-3">
+							<input type="hidden" name="userId" value="{{userId}}">
+                            <label for="noticeTitle" class="noticeLabel">제목</label>
+                            <input type="text" class="form-control" name="title" id="noticeTitle" value="{{title}}" required>
+                            <label for="noticeContents" class="noticeLabel">내용</label>
+                            <textarea class="form-control" id="noticeContents" name="contents" rows="3">{{contents}}</textarea>
+							<div class="notice_btn d-flex justify-content-end">
+								<button class="btn notice_save_btn my-1 px-1 py-0" style="font-size:15px;" type="submit">저장</button>
+						</div>
+					</form>	
+                </div>
+			{{/notice}}
+            </div>
+		</div>
+	</div>
+</div>
+</body>
+
+<script>
+	Handlebars.registerHelper('formatDate', function(date) {
+    return moment(date).format('YYYY-MM-DD');
+});
+</script>
+{{>common/footer}}	
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+

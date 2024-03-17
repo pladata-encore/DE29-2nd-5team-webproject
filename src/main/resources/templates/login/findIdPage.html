@@ -1,0 +1,95 @@
+{{>common/header}}
+
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<style>
+	/* The Modal (background) */
+	.modal {
+		display: none; /* Hidden by default */
+		position: fixed; /* Stay in place */
+		z-index: 1050; /* Sit on top */
+		left: 0;
+		top: 0;
+		width: 100%; /* Full width */
+		height: 100%; /* Full height */
+		overflow: auto; /* Enable scroll if needed */
+		background-color: rgb(0,0,0); /* Fallback color */
+		background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	}
+
+	/* Modal Content/Box */
+	.modal-content {
+		background-color: #fefefe;
+		margin: 15% auto; /* 15% from the top and centered */
+		padding: 20px;
+		border: 1px solid #888;
+		width: 30%; /* Could be more or less, depending on screen size */                          
+	}
+</style>
+
+<body>      
+    <div class="contact_form_section">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+
+                    <!-- form -->
+                    <div class="contact_form_container">
+                        <div class="contact_title text-center">아이디 찾기</div>
+                        <form action="/findId" id="contact_form" class="contact_form text-center" method="get">
+                            <input type="text" id="contact_form_name" name="userNm" class="contact_form_name input_field" placeholder="홍길동" required="required" data-error="이름을 입력하세요">
+                            <br>
+                            <input type="email" id="contact_form_email" name="userEmail" class="contact_form_email input_field" placeholder="id@casimo.com" required="required" data-error="이메일을 입력하세요">
+                            <br>
+                            <button type="submit" id="form_submit_button" class="form_submit_button button trans_200">아이디 찾기<span></span><span></span><span></span></button>
+                                <!-- 버튼을 누르면 post 방식으로 컨트롤에게 요청 -->
+                        </form>
+
+                        {{#errorMessage}}
+                        <div>
+                            <p>{{errorMessage}}</p>
+                        </div>
+                        {{/errorMessage}}
+                
+                
+                        <div class="contact_info_item d-flex justify-content-around">
+                            <div class="form_submit_button button trans_200"><a href="/loginPage" target="_top">로그인 화면 이동<span></span><span></span><span></span></a></div>
+                        </div>
+                        <div class="contact_info_item d-flex justify-content-around">
+                            <div class="form_submit_button button trans_200"><a onclick="open_pop();">비밀번호 찾기<span></span><span></span><span></span></a></div>	
+                        </div>
+
+                        <div id="myModal" class="modal">
+                            <div class="modal-content">
+                                    <p style="text-align: center;">
+                                        <span style="font-size: 14pt;">
+                                            <b><span style="font-size: 15pt;">아이디를 입력하세요.</span></b></span></p>
+                                    <form name="loginForm" action="/findPw" method="post">
+                                        <input type="text" id="userId" name="userId" placeholder="아이디를 입력하세요." autofocus>
+                                        <br>
+                                        <input type="submit" value="조회하기">
+                                    </form>
+                                    <a onclick="close_pop();">
+                                        <input type="submit" value="닫기">
+                                    </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function open_pop(flag) {
+            $('#myModal').show();
+        };
+        //팝업 Close 기능
+        function close_pop(flag) {
+            $('#myModal').hide();
+        };
+    </script>
+
+</body>
+
+{{>common/footer}}	

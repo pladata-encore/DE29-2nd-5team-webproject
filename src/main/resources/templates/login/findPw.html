@@ -1,0 +1,69 @@
+{{>common/header}}
+<title>Document</title>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+
+<script type="text/javascript">
+	$(function(result){		
+		if($("#joinForm").submit(function(result){
+            if ($("#userPw").val() !== $("#userPw2").val()){
+				alert("PW가 서로 다릅니다.");
+				$("#userPw").val("").focus();
+				$("#userPw2").val("");
+				return false;
+			} else if($.trim($("#userPw").val()) !== $("#userPw").val()){
+				alert("공백은 PW로 사용할 수 없습니다.");
+				$("#userPw").val("").focus();
+				$("#userPw2").val("");
+				return false;
+            } else if ($("#userPw").val().length <= 4) {
+				alert("PW가 4자리 이하입니다.");
+				$("#userPw").val("").focus();
+				$("#userPw2").val("");
+				return false;
+            }
+		}));
+	})
+
+    $(document).ready(function() {
+        $("#userPw2").on("focusout", function() {
+        if($("#userPw").val() !== $("#userPw2").val()) {
+            $("#label2").css("color", "red").text("PW가 서로 다릅니다.");
+            return false;
+        } else if ($("#userPw").val().match(/\s/g)) {
+            $("#label2").css("color", "red").text("공백은 PW로 사용할 수 없습니다.");
+            return false;
+        } else if ($("#userPw").val().length <= 4) {
+            $("#label2").css("color", "red").text("PW가 4자리 이하입니다.");
+            return false;
+        } else if($("#userPw").val() == $("#userPw2").val()) {
+            $("#label2").css("color", "black").text("사용 가능한 PW 입니다.");
+            return true;
+        }
+    })})
+</script>
+
+<body>
+    <div class="menu_content d-flex flex-column align-items-center justify-content-left text-center">
+        <h3>{{userId}}님의 비밀번호 변경</h3>
+    <form id="joinForm" action="/findPw2" method="post">
+        <label for="pwd">* Password: </label>
+        <input type="password" id="userPw" name="userPw" placeholder="비밀번호를 입력하세요." required>
+        <br>
+        <small>최소 4자리 이상의 영문, 숫자, 특수문자 조합</small>
+        <br>
+        <label for="pwd_equal"> Password 확인: </label>
+        <input type="password" id="userPw2" placeholder="비밀번호 확인">
+        <br>
+        <label id="label2"></label>
+        <!-- <button>패스워드 확인</button> -->
+        <br>
+        <input type="hidden" name="userId" id="userId" value="{{userId}}">
+        <input type="submit" value="회원가입">
+        </form>
+        <a href="/index">
+            <input type="submit" value="홈으로 이동">
+        </a></div>
+</body>
+
+
+{{>common/footer}}	
