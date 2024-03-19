@@ -242,24 +242,33 @@
 			<div class="col">
 				<div class="comments_panel">
 						<div class="row notice_sub_row mb-0 mt-1">
-							<p class="comment_user my-1">{{userId}}</p>
+							<div class="col d-flex align-items-center">
+								<p class="comment_user my-1 mr-3">{{userId}}</p>
+								{{#sameUserYn}}
+								<ul class="list-inline d-flex flex-row justify-content-center my-1" id="find_wrap">
+									<li><a id="commentUptBtn" href='javascript:void(0);' onclick="main.commentUpdate(this);" class="find_text">수정</a></li>
+									<li class="find_separator">|</li>
+									<li><a id="commentDelBtn" href='javascript:void(0);' onclick="main.commentDelete(this);" class="find_text">삭제</a></li>
+								</ul>
+								{{/sameUserYn}}	
+							</div>
 						</div>
 						
 						<form id="commentTask_{{commentId}}" class="mt-1" method="post" enctype="application/x-www-form-urlencoded">
 							<div class="row mt-0">
-								<textarea class="form-control comment_textarea" name="contents" {{^sameUserYn}}readonly{{/sameUserYn}}>{{contents}}</textarea>
+								<textarea class="form-control comment_textarea" id="uptContents" name="contents" {{^sameUserYn}}readonly{{/sameUserYn}}>{{contents}}</textarea>
 							</div>
 							<div class="row">
 								<div class="col">
-									<input type="hidden" name="userId" value="{{loginUserId}}">
-									<input type="hidden" name="noticeId" value="{{noticeId}}">
-									<input type="hidden" name="commentId" value="{{commentId}}">
-									{{#sameUserYn}}
+									<input type="hidden" id="uptUserId" name="userId" value="{{loginUserId}}">
+									<input type="hidden" id="uptNoticeId" name="noticeId" value="{{noticeId}}">
+									<input type="hidden" id="uptCommentId" name="commentId" value="{{commentId}}">
+									<!-- {{#sameUserYn}}
 									<div class="row d-flex justify-content-end mt-1">
-										<button class="btn comment_update_btn mb-1 px-1 py-0 mr-2" onclick="commentUpdate(this)" type="button">수정</button>
-										<button class="btn comment_del_btn mb-1 px-1 py-0" onclick="commentDelete(this)" type="button">삭제</button>
+										<button id="commentUptBtn" class="btn comment_update_btn mb-1 px-1 py-0 mr-2" onclick="commentUpdate(this)" type="button">수정</button>
+										<button id="commentDelBtn" class="btn comment_del_btn mb-1 px-1 py-0" onclick="commentDelete(this)" type="button">삭제</button>
 									</div>
-									{{/sameUserYn}}
+									{{/sameUserYn}} -->
 								</div>
 							</div>
 						</form>
@@ -271,15 +280,15 @@
 		<div class="row">
 			<div class="col">
 				<div class="comments_panel">
-					<form class="mt-3" action="/comments/save" method="post" enctype="application/x-www-form-urlencoded">
-						<input type="hidden" name="userId" value="{{loginUserId}}">
-						<input type="hidden" name="noticeId" value="{{notice.noticeId}}">
+					<form class="mt-3" method="post">
+						<input type="hidden" id="submitUserId" name="userId" value="{{loginUserId}}">
+						<input type="hidden" id="submitNoticeId" name="noticeId" value="{{notice.noticeId}}">
 						<div class="mb-3">
 							<label for="commentContents" class="commentLabel">댓글</label>
-							<textarea class="form-control" id="commentContents" name="contents" rows="3"></textarea>
+							<textarea class="form-control" id="submitCommentContents" name="contents" rows="3"></textarea>
 						</div>
 						<div class="content_btn d-flex justify-content-end">
-							<button class="btn content_save_btn mb-3 px-1 py-0" style="font-size:15px;" type="submit">댓글 등록</button>
+							<button id="commentSaveBtn" class="btn content_save_btn mb-3 px-1 py-0" style="font-size:15px;" type="button">댓글 등록</button>
 						</div>
 					</form>
 				</div>
@@ -290,6 +299,7 @@
 	
 </div>
 </body>
+
 <script>
     function confirmDelete() {
         if (confirm("정말로 삭제하시겠습니까?")) {
@@ -297,20 +307,67 @@
             document.getElementById("noticeTask").submit();
         }
     }
-	function commentUpdate(button){
-		let form = button.closest('form');
-		// var formId = form.getAttribute('id');
-		form.action = "/comments/update";
-        form.submit();
-	}
-	function commentDelete(button){
-		let form = button.closest('form');
-    	// var form = document.getElementById(formId);
-		form.action = "/comments/delete";
-        form.submit();
-	}
 </script>
 {{>common/footer}}	
+<script>
+	const header={
+				method : "POST",
+				headers : {
+					"Content-Type":"application/json",
+				}
+			}
+	const main = {
+		
+		init : function(){
+			const _this = this;
+			
+
+			$('#commentSaveBtn').on('click',function(){
+				_this.commentSave();
+			});
+		},
+		commentSave : function(){
+			let data = {
+				userId : $("#submitUserId").val(),
+				noticeId : parseInt($("#submitNoticeId").val()),
+				contents : $("#submitCommentContents").val()
+			}
+			
+			let headers = {...header};
+			headers['body'] = JSON.stringify(data);
+
+			fetch("/comments/save",headers).then((response)=>window.location.reload());
+		},
+
+		commentUpdate : function(tag){
+			let form = $(tag).closest('.comments_panel').find('form');
+			let data = {
+				commentId : form.find("#uptCommentId").val(),
+				userId : form.find("#uptUserId").val(),
+				noticeId : parseInt(form.find("#uptNoticeId").val()),
+				contents : form.find("#uptContents").val()
+			}
+			let headers = {...header};
+			headers['body'] = JSON.stringify(data);
+
+			fetch("/comments/update",headers).then((response)=>window.location.reload());
+		},
+		commentDelete : function(tag){
+			let form = $(tag).closest('.comments_panel').find('form');
+			let data = {
+				commentId : form.find("#uptCommentId").val(),
+				userId : form.find("#uptUserId").val(),
+				noticeId : parseInt(form.find("#uptNoticeId").val()),
+				contents : form.find("#uptContents").val()
+			}
+			let headers = {...header};
+			headers['body'] = JSON.stringify(data);
+
+			fetch("/comments/delete",headers).then((response)=>window.location.reload());
+		}
+	};
+	main.init();
+</script>
 <!-- <script src="/static/js/bootstrap.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
