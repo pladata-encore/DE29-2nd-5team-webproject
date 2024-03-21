@@ -37,26 +37,24 @@ public class MainController {
     private UserDao userDao;
 
 
-    /*
-     * 누구나 접근 가능
-     */
     @GetMapping({ "/index", "/" })
-    public String index(Authentication authentication, Model model, HttpSession session) {
+    public String index(Authentication authentication, HttpSession session) {
         log.info("[MainController][index] Start");
+        // [UserServiceImpl][joinUserDto] 에서 setRole을 통해 권한 설정 (admin, manager, user)
         if (authentication == null || userRepository.getUserDtoById(authentication.getName()) == null) {
             return "index";
         }
         if (authentication.getName().equals("admin")) {
             return "admin/index";
-        } else {
-            log.info("[user]: " + authentication);
+        } else if (authentication.getName().equals("user")) {
             return "user/index";
+        } else {
+            return "index";
         }
     }
 
     @GetMapping("/loginPage")
     public String loginPage(@RequestParam(value = "errorMessage", required = false) String errorMessage, Model model) {
-
         model.addAttribute("errorMessage", errorMessage);
         return "login/loginPage";
     }

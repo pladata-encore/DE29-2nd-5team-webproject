@@ -1,38 +1,148 @@
 {{>common/header}}
+<title>관리자 페이지</title>
 
-<h3>관리자 {{adminYn}}님</h3>
+<style>
+	.user_panel{
+		/* display: none !important; */
+		width: 100%;
+		height: 100%;
+		-webkit-animation: fadeEffect 1s;
+		animation: fadeEffect 1s;
+	}
+	.user_title{
+		font-weight: 700;
+		color: #2d2c2c;
+		margin-top: 60px;
+		margin-bottom: 30px;
+	}
+	.user_head{
+		font-size: 24px;
+		background-color: #350a4e ;
+		line-height: 1.336;
+		margin-bottom: 0px;
+		align-items: center;
+		border-bottom: 1px solid;
+	}
+
+	.user_head p{
+		margin-top:10px;
+		color: #FFFFFF;
+		font-size: 15px;
+		font-weight: 700;
+	}
+	.user_btn a{
+		width: 100px;
+		display: block;
+		font-size: 13px;
+		font-weight: 700;
+		background-color: #350a4e;
+		color: #fff;
+		text-transform: uppercase;
+		line-height: 40px;
+		padding-left: 46px;
+		padding-right: 46px;
+		white-space: nowrap;
+		z-index: 2;
+	}
+	.user_link a:hover{
+		font-weight: 500;
+		color : black;
+	}
+	.user_btn a:hover{
+		background-color: #fa9e1b;
+	}
+	.list_row{
+		padding-top:2%;
+	}
+    .home_btn{
+		width: 100px;
+		display: flex;
+		font-size: 13px;
+		font-weight: 700;
+		background-color: #350a4e;
+		color: #fff;
+		text-transform: uppercase;
+		line-height: 40px;
+		padding-left: 46px;
+		padding-right: 46px;
+		white-space: nowrap;
+		z-index: 2;
+	}
+    .home_btn:hover{
+        background-color: #fa9e1b;
+    }
+</style>
+
 <body>
-    {{#userlist}}
-    <div class="member_list" >
-        <table class="admin_board_wrap" id="user-admin">
-            <thead class="admin_boardList">
-                <th class="admin_board_head">아이디</th>
-                <th class="admin_board_head">이름</th>
-                <th class="admin_board_head">성별</th>
-                <th class="admin_board_head">권한</th>
-                <th class="admin_board_head">가입일</th>
-                <th class="admin_board_head">전화번호</th>
-                <th class="admin_board_head">게시글수</th>
-                <th class="admin_board_head">댓글수</th>
-                <th class="admin_board_head">가입승인</th>
-            </thead>
-            <tbody>
-            <tr class="admin_board_content">
-                <td class="admin_board_content_nm">{{userId}}</td>
-                <td class="admin_board_content_nm">{{userNm}}</td>
-                <td class="admin_board_content_nm">{{userSex}}</td>
-                <td class="admin_board_content_nm">{{role}}</td>
-                <td class="admin_board_content_nm">{{createDate}}</td>
-                <td class="admin_board_content_nm">{{userPhNmb}}</td>
-            </tr>
-            </tbody>
-        </table>
+    <h3>관리자 {{adminYn}}님</h3>
+<div class="userList pb-3 mb-7">
+	<div class="container">
+		<div class="user_panel">
+			<div class="row">
+				<div class="col">
+					<h2 class="user_title text-center">유저 목록</h2>
+                </div>
+            </div>
+			<div class="row user_head">
+				<div class="col-1 align-items-center">
+                    <p>아이디</p>
+                </div>
+				<div class="col-1 align-items-center">
+					<p>이름</p>
+				</div>
+				<div class="col-1 align-items-center">
+					<p>성별</p>
+				</div>
+				<div class="col-1 align-items-center">
+					<p>권한</p>
+                </div>
+				<div class="col-3 align-items-center text-center">
+					<p>가입일</p>
+                </div>
+				<div class="col-3 align-items-center">
+					<p>전화번호</p>
+				</div>
+				<!-- <div class="col-1 align-items-center">
+					<p>게시글수</p>
+				</div>
+				<div class="col-1 align-items-center">
+					<p>댓글수</p>
+				</div>
+				<div class="col-1 align-items-center">
+					<p>가입승인</p>
+				</div> -->
+            </div>
+            {{#userlist}}
+			<div class="list_row row my-0">
+				<div class="col-1 d-flex py-0 text-center justify-content-center">
+                    <p>{{userId}}</p>
+                </div>
+				<div class="col-1 d-flex py-0">
+					<p>{{userNm}}</p>
+				</div>
+				<div class="col-1 d-flex py-0">
+					<p>{{userSex}}</p>
+				</div>	
+				<div class="col-1 d-flex py-0">
+					<p>{{role}}</p>
+				</div>	
+				<div class="col-3 d-flex py-0 justify-content-center">
+					<p>{{createDate}}</p>
+				</div>
+				<div class="col-1 d-flex py-0">
+					<p>{{userPhNmb}}</p>
+				</div>
+            </div>
+            <hr class="my-0">
+            {{/userlist}}
+        </div>
     </div>
-    {{/userlist}}
-
+</div>
+<div>
     <a href="/index">
-        <button class="w3-button w3-block w3-black w3-ripple w3-margin-top w3-round">홈으로</button>
+        <input class="btn home_btn d-flex justify-content-center" type="submit" style="width: 100%;" style="width:60%;height:100%;" value="홈으로 이동">
     </a>
-
+    <br>
+</div>
 </body>
 {{>common/footer}}	

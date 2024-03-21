@@ -43,7 +43,7 @@ public class LoginAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandl
       session.setAttribute("loginUserId",dto.getUserId());
       session.setAttribute("loginUserName", dto.getUserNm());
       if(dto.getRole().equals("ADMIN")){
-        session.setAttribute("adminYn", true);
+        session.setAttribute("adminYn", dto.getUserNm());
       }else{
         session.setAttribute("adminYn",false);
       }

@@ -80,7 +80,7 @@ public class BoardController {
         
         List<CommentDto> commentDtos = commentService.findAllComments(userId,noticeId);
         for(CommentDto dto : commentDtos){
-            log.info(dto.toString());
+            // log.info(dto.toString());
         }
         model.addAttribute("notice", boardDto);
         if(!commentDtos.isEmpty()){
@@ -115,7 +115,7 @@ public class BoardController {
     public String updateNotice(@PathVariable("noticeId") Long noticeId,Authentication authentication
                                 ,@ModelAttribute BoardDto boardDto,RedirectAttributes redirectAttributes){
         log.info("[BoardController][updateNotice] start");
-        log.info("noticeId:"+noticeId+"  boardDto : "+boardDto.toString());
+        // log.info("noticeId:"+noticeId+"  boardDto : "+boardDto.toString());
         UserDetails userDetails = (UserDetails)authentication.getPrincipal();
         boardDto.setUserId(userDetails.getUsername());
         boardService.updateNotice(boardDto);
